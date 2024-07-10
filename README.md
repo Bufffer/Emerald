@@ -39,11 +39,37 @@ The Emerald Project is an academic article recommendation system designed to pro
 - **Dynamic Updates**: Continuously refines recommendations according to user feedback and reading history.
 - **Feedback Mechanism**: Users can mark recommendations as relevant or not, influencing future suggestions.
 
+
+
+
 ## How to Run the Project
+# Befaıre run the project you have to install cc.en.300.bin file for FastText model from [https://fasttext.cc/docs/en/crawl-vectors.html] then you have to add the file to root directory.
+
+# then create a mongodb project and define MONGO_URI and SECRET_KEY in .env.
+
+
+
 1. **Clone the Repository**:
    ```sh
    git clone https://github.com/Bufffer/Emerald.git
    cd Emerald
+
+
+2. **Create an virtual env**:
+   ```sh
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt # Install Dependencies
+
+
+2. **Run the Project**:
+   ```sh
+   python run.py
+   # and the project will be running at http://127.0.0.1:5000.
+   
+
+
+## Images from the project
+
+
+
