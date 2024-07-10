@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Emerald |  {% endblock %}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+
+    <div class="loading-screen">
+        <i class='bx bx-loader-alt bx-spin'></i>
+        <p>LOADING</p>
+    </div>
+
+    <div class="nav">
+        <div class="routes">
+            <ul>
+                <li><a href="/"><span class="emerald">Emerald</span></a></li>
+                <li><a href="/recommendations">For You</a></li>
+                <li><a href="/searcharticles">Articles</a></li>
+            </ul>
+        </div>
+    
+        <div class="progress">
+            <ul>
+                <li><a href="{{ url_for('profile', email=session['email']) }}"><i class='bx bx-user' title="profile"></i></a></li>
+                <li><a href="/logout"><i class='bx bx-log-out' title="Log-out"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.querySelector('.loading-screen').style.display = 'none';
+            document.querySelector('.content').style.display = 'block';
+        }, 3000);
+    });
+    </script>
+    {%block content%}{% endblock %}
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

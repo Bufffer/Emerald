@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} Search Article {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <span>SEARCH FOR ARTICLES</span>
+    </div>
+    <form action="{{ url_for('search_articles') }}" method="post" id="src">
+        <div class="search-box">
+            <div class="search-container">
+                <input type="text" name="search" class="search" placeholder="Search articles...">
+            </div>
+            <a href="javascript:{}" onclick="document.getElementById('src').submit();" id="submit" class="button-search">
+                <i class='bx bx-search-alt-2'></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="articles">
+        {% for article in articles %}
+        <div class="article-card">
+            <a href="{{ url_for('article_detail', article_id=article._id) }}">
+                <h2 class="article-title">{{ article['article_title'] }}</h2>
+            </a>
+            <p class="article-abstract">{{ article['article_content'][:200] }}...</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

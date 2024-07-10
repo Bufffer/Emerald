@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %} Detail {% endblock %}
+
+{% block content %}
+<div class="article-detail">
+    <div class="article-title">
+        <h1>{{ article.article_title }}</h1>
+        <div class="article-abstract">
+            <p>{{ article.article_content }}</p>
+        </div>
+        <div class="keywords">
+            <h5>Extractive Keywords:</h5>
+            <p>{{ article.extractive_keyphrases | join(', ') }}</p>
+        </div>
+        <div class="keywords">
+            <h5>Abstractive Keywords:</h5>
+            <p>{{ article.abstractive_keyphrases | join(', ') }}</p>
+        </div>
+        <div class="opinions">
+            <p>Did you find the article helpful?</p>
+            <div class="icon-btn">
+                <span>
+                    <a href="#" class="like" onclick="submitFeedback('{{ article._id }}', 'interested')">
+                        <i class='bx {{ 'bxs-like' if feedback and feedback.interest == 'interested' else 'bx-like' }}' id="like-icon"> Yes </i> 
+                    </a>
+                </span>
+                <span>
+                    <a href="#" class="dislike" onclick="submitFeedback('{{ article._id }}', 'not_interested')">
+                        <i class='bx {{ 'bxs-dislike' if feedback and feedback.interest == 'not_interested' else 'bx-dislike' }}' id="dislike-icon"> No </i> 
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitFeedback(article_id, interest) {
+        fetch('/submit_feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                article_id: article_id,
+                interest: interest
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (interest === 'interested') {
+                document.getElementById('like-icon').className = 'bx bxs-like';
+                document.getElementById('dislike-icon').className = 'bx bx-dislike';
+            } else if (interest === 'not_interested') {
+                document.getElementById('like-icon').className = 'bx bx-like';
+                document.getElementById('dislike-icon').className = 'bx bxs-dislike';
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+</script>
+{% endblock %}

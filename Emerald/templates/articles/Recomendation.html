@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %} Articles Recommendations {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <span>RECOMMENDATIONS</span>
+        <p id="personal-precision">Precision: {{ precision | round(2) }}</p>
+        <p><img src="{{ url_for('static', filename='images/lp-icon-7.gif') }}" alt="" width="100px"></p>
+    </div>
+    <div class="recomendat">
+        <div class="lef">
+            <h2 class="rec">Based on <span class="hvrme"> FastText </span> Vectors</h2>
+            <ul class="recul">
+            {% for recommendation in recommendations_fasttext %}
+                <li>
+                    <a href="{{ url_for('article_detail', article_id=recommendation[0]['_id']|string) }}" class="rec-a">
+                        <h3 class="rectitle">{{ recommendation[0].article_title }}</h3>
+                        <p>{{ recommendation[0].article_content | truncate(200, true, '...') }}</p>
+                        <p> <span style="font-weight: bold;">Similarity Score:</span> <span class="score"> {{ recommendation[1] }}</span></p>
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div class="ri">
+            <h2 class="rec">Based on <span class="hvrme"> SciBERT </span> Vectors</h2>
+            <ul class="recul">
+            {% for recommendation in recommendations_scibert %}
+                <li>
+                    <a href="{{ url_for('article_detail', article_id=recommendation[0]['_id']|string) }}">
+                        <h3 class="rectitle">{{ recommendation[0].article_title }}</h3>
+                        <p>{{ recommendation[0].article_content | truncate(200, true, '...') }}</p>
+                        <p> <span style="font-weight: bold;">Similarity Score:</span> <span class="score"> {{ recommendation[1] }}</span></p>
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

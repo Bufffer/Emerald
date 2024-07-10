@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="header">
+    <span>PROFILE</span>
+  </div>
+  <div class="profile">
+    <div class="leftSide">
+      <div class="userIcon">
+        <span class="profile_name" id="display_name">{{ user.username }}</span>
+      </div>
+      <div class="userinfo">
+        <p>
+          <label for="name"><span style="color: #ffff;font-weight:bold;font-size:21px; margin-right:10px;"><i class='bx bx-user'></i></span> <span style="font-size: 19px;" id="display_name_text">{{ user.username }} {{ user.lastname }}</span></label>
+        </p>
+   
+        <p>
+          <label for="email"><span style="color: #ffff;font-weight:bold;font-size:21px; margin-right:10px;"><i class='bx bx-envelope' ></i></span> <span style="font-size: 19px;" id="display_email_text">{{ user.email }}</span></label>
+        </p>
+        <div class="userinterests">
+          <span style="color: #ffff;font-weight: bold;font-size: 20px;margin-left:22px;">Interests</span>
+          <ul>
+            {% for interest in user.interests %}
+              <li>{{ interest }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="userprogress"></div>
+    </div>
+    <div class="rightSide">
+      <form action="{{ url_for('update_profile') }}" method="POST" class="frm">
+        <div class="name">
+          <label for="name">Username</label>
+          <input type="text" name="name" id="name" value="{{ user.username }}" readonly>
+        </div>
+        <div class="lastname">
+          <label for="lastname">Last Name</label>
+          <input type="text" name="lastname" id="lastname" value="{{ user.lastname }}" readonly>
+        </div>
+        <div class="email">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" value="{{ user.email }}" readonly>
+        </div>
+        <div class="password">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" value="">
+        </div>
+        <div class="edit">
+          <button type="button" id="editBtn" class="submit"><i class='bx bx-edit-alt'></i> Edit</button>
+          <button type="submit" id="saveBtn" class="submit" disabled style="background-color: seagreen; color: #fff;"><i class='bx bx-check'></i> Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const editBtn = document.getElementById('editBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const allInputs = document.querySelectorAll('.rightSide input[type="text"], .rightSide input[type="email"], .rightSide input[type="password"]');
+  const displayName = document.getElementById('display_name');
+  const displayNameText = document.getElementById('display_name_text');
+  const displayLastname = document.getElementById('display_lastname');
+  const displayLastnameText = document.getElementById('display_lastname_text');
+  const displayEmailText = document.getElementById('display_email_text');
+
+  editBtn.addEventListener('click', function() {
+    allInputs.forEach(input => input.removeAttribute('readonly'));
+    saveBtn.removeAttribute('disabled'); 
+  });
+
+  allInputs.forEach(input => {
+    input.addEventListener('input', function() {
+      saveBtn.removeAttribute('disabled'); 
+
+      if (input.id === 'name') {
+        displayName.textContent = input.value;
+        displayNameText.textContent = input.value;
+      } else if (input.id === 'lastname') {
+        displayLastname.textContent = input.value;
+        displayLastnameText.textContent = input.value;
+      } else if (input.id === 'email') {
+        displayEmailText.textContent = input.value;
+      }
+    });
+  });
+</script>
+
+{% endblock %}
