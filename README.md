@@ -40,7 +40,31 @@ The Emerald Project is an academic article recommendation system designed to pro
 - **Feedback Mechanism**: Users can mark recommendations as relevant or not, influencing future suggestions.
 
 
+## Hash algorithm
+```python
+def hash_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['name']
+        lastname = request.form['lastname']
+        email = request.form['email']
+        password = hash_password(request.form['password'])
+        interests = request.form.getlist('interests')
+        
+        user_collection = db['Users']
+        existing_user = user_collection.find_one({'email': email})
+        
+        if existing_user:
+            return jsonify({"error": "This email is already registered."}), 400
+        
+        new_user = User(username=username, lastname=lastname, email=email, password=password, interests=interests)
+        new_user.save() 
+        return jsonify({"success": "User registered successfully."}), 200  
+    return render_template('auth/Register.html')
+```
 
 ## How to Run the Project
 # Befaıre run the project you have to install cc.en.300.bin file for FastText model from [https://fasttext.cc/docs/en/crawl-vectors.html] then you have to add the file to root directory.
@@ -53,6 +77,7 @@ The Emerald Project is an academic article recommendation system designed to pro
    ```sh
    git clone https://github.com/Bufffer/Emerald.git
    cd Emerald
+   ```
 
 
 2. **Create an virtual env**:
@@ -60,11 +85,13 @@ The Emerald Project is an academic article recommendation system designed to pro
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt # Install Dependencies
+   ```
 
 2. **Run the Project**:
    ```sh
    python run.py
    # and the project will be running at http://127.0.0.1:5000.
+   ```
 
 
 ## Images from the project
